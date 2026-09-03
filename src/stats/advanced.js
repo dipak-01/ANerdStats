@@ -10,6 +10,7 @@ export function calculateContrarianScore(allEntries) {
   if (scored.length === 0) return { mostOverscored: [], mostUnderscored: [] };
 
   const diffs = scored.map((e) => ({
+    id: e.media.id,
     title: e.media.title.romaji || e.media.title.english || 'Unknown',
     yourScore: e.score,
     globalScore: e.media.averageScore,
@@ -191,6 +192,7 @@ export function calculateDropPointAnalysis(allEntries) {
   if (dropped.length === 0) return { avgDropPercent: null, drops: [], count: 0 };
 
   const drops = dropped.map((e) => ({
+    id: e.media.id,
     title: e.media.title.romaji || e.media.title.english || 'Unknown',
     progress: e.progress,
     total: e.media.episodes,

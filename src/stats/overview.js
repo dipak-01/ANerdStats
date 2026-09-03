@@ -29,6 +29,7 @@ export function calculateOverviewStats(userStats, allEntries) {
     .sort((a, b) => b.repeat - a.repeat)
     .slice(0, 5)
     .map((e) => ({
+      id: e.media.id,
       title: e.media.title.romaji || e.media.title.english || 'Unknown',
       repeat: e.repeat,
       coverImage: e.media.coverImage?.medium,

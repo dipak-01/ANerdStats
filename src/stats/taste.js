@@ -20,6 +20,7 @@ export function calculateTasteCorrelation(allEntries) {
   const diffs = scored.map((e) => {
     const userScoreNormalized = e.score * 10; // Normalize 1-10 to 10-100
     return {
+      id: e.media.id,
       title: e.media.title.romaji || e.media.title.english || 'Unknown',
       yourScore: e.score,
       globalScore: e.media.averageScore,

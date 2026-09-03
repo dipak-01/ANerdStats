@@ -1,4 +1,5 @@
 import { Flame, Clock, Zap } from 'lucide-react';
+import AnimeLink from './AnimeLink';
 
 export default function BingeStats({ bingeData }) {
   if (!bingeData || bingeData.avgDays === null) return null;
@@ -71,7 +72,7 @@ export default function BingeStats({ bingeData }) {
                         <span className="rank-number" style={{ fontSize: '1.1rem' }}>{i + 1}</span>
                       </td>
                       <td style={{ maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {b.title}
+                        <AnimeLink id={b.id}>{b.title}</AnimeLink>
                       </td>
                       <td>
                         <span className="neo-badge neo-badge-accent" style={{ fontSize: '0.7rem' }}>
@@ -111,7 +112,7 @@ export default function BingeStats({ bingeData }) {
                         <span className="rank-number" style={{ fontSize: '1.1rem' }}>{i + 1}</span>
                       </td>
                       <td style={{ maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {b.title}
+                        <AnimeLink id={b.id}>{b.title}</AnimeLink>
                       </td>
                       <td>
                         <span className="neo-badge neo-badge-secondary" style={{ fontSize: '0.7rem' }}>

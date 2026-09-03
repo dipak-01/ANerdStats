@@ -1,23 +1,29 @@
 import { Sparkles } from 'lucide-react';
-import YearTimeline from './YearTimeline';
-import AnimeDecade from './AnimeDecade';
+import GenreChart from './GenreChart';
+import TagCloud from './TagCloud';
 
-export default function TimelineTab({ releaseYears, decadeData, genreEvolution }) {
+export default function GenresTab({ anime, advancedStats }) {
+  if (!anime) return null;
+
   return (
     <div className="tab-content">
-      {/* Row 1: Year Timeline + Anime Decade */}
+      {/* Genre Chart */}
       <section className="section texture-halftone">
         <div className="container relative z-1">
-          <div className="grid-2" style={{ gap: '2rem' }}>
-            <YearTimeline releaseYears={releaseYears} />
-            <AnimeDecade data={decadeData} />
-          </div>
+          <GenreChart genres={anime.genres} />
         </div>
       </section>
 
-      {/* Row 2: Genre Evolution Timeline */}
-      {genreEvolution && genreEvolution.length > 0 && (
-        <section className="section section-yellow texture-dots">
+      {/* Tag Cloud */}
+      <section className="section section-violet texture-dots">
+        <div className="container relative z-1">
+          <TagCloud tags={anime.tags} />
+        </div>
+      </section>
+
+      {/* Genre Evolution Timeline */}
+      {advancedStats?.genreEvolution?.length > 0 && (
+        <section className="section texture-grid">
           <div className="container relative z-1">
             <div className="neo-card">
               <div className="neo-card-header neo-card-header-accent">
@@ -44,16 +50,10 @@ export default function TimelineTab({ releaseYears, decadeData, genreEvolution }
                       </tr>
                     </thead>
                     <tbody>
-                      {genreEvolution.map((row) => (
+                      {advancedStats.genreEvolution.map((row) => (
                         <tr key={row.year}>
-                          <td>
-                            <span className="rank-number" style={{ fontSize: '1rem' }}>{row.year}</span>
-                          </td>
-                          <td>
-                            <span className="neo-badge neo-badge-accent" style={{ fontSize: '0.7rem' }}>
-                              {row.topGenre}
-                            </span>
-                          </td>
+                          <td><span className="rank-number" style={{ fontSize: '1rem' }}>{row.year}</span></td>
+                          <td><span className="neo-badge neo-badge-accent" style={{ fontSize: '0.7rem' }}>{row.topGenre}</span></td>
                           <td>{row.topCount}</td>
                           <td>{row.totalShows}</td>
                         </tr>

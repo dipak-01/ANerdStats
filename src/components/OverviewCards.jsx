@@ -1,4 +1,4 @@
-import { Timer, Trophy, Tv, Star as StarIcon, Hash, TrendingUp } from 'lucide-react';
+import { Timer, Tv, Star as StarIcon, Hash, TrendingUp } from 'lucide-react';
 
 export default function OverviewCards({ stats }) {
   if (!stats) return null;

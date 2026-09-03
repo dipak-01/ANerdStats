@@ -28,6 +28,7 @@ export function calculateBingeStats(allEntries) {
       const end = new Date(e.completedAt.year, e.completedAt.month - 1, e.completedAt.day);
       const days = Math.round((end - start) / (1000 * 60 * 60 * 24));
       return {
+        id: e.media.id,
         title: e.media.title.romaji || e.media.title.english || 'Unknown',
         days,
         episodes: e.media.episodes || 0,

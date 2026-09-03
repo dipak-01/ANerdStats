@@ -1,7 +1,7 @@
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine,
 } from 'recharts';
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, TrendingDown, MoveRight } from 'lucide-react';
 
 function CustomTooltip({ active, payload }) {
   if (!active || !payload?.length) return null;
@@ -43,11 +43,28 @@ export default function GradeInflation({ data }) {
               fontSize: '0.75rem',
               padding: '0.3rem 0.75rem',
               border: '2px solid #000',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
             }}
           >
-            {trend > 0.3 ? '📈 GETTING GENEROUS' : trend < -0.3 ? '📉 GETTING HARSHER' : '➡️ CONSISTENT'}
-            {' · '}
-            {trend > 0 ? '+' : ''}{trend.toFixed(2)} OVER TIME
+            {trend > 0.3 ? (
+              <>
+                <TrendingUp size={16} strokeWidth={3} />
+                <span>GETTING GENEROUS</span>
+              </>
+            ) : trend < -0.3 ? (
+              <>
+                <TrendingDown size={16} strokeWidth={3} />
+                <span>GETTING HARSHER</span>
+              </>
+            ) : (
+              <>
+                <MoveRight size={16} strokeWidth={3} />
+                <span>CONSISTENT</span>
+              </>
+            )}
+            <span>· {trend > 0 ? '+' : ''}{trend.toFixed(2)} OVER TIME</span>
           </span>
         </div>
         <div className="chart-container" style={{ height: 250 }}>

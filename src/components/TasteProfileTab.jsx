@@ -1,19 +1,23 @@
-import { Brain, TrendingUp, ThumbsUp, ThumbsDown, Target, Scissors, Users } from 'lucide-react';
+import {
+  ThumbsUp, ThumbsDown, Target, Scissors, Megaphone, Radio, Scale, Sparkles, Gem, HelpCircle,
+} from 'lucide-react';
+import AnimeLink from './AnimeLink';
 import TasteCorrelation from './TasteCorrelation';
 import GradeInflation from './GradeInflation';
 
 const POPULARITY_BADGE = {
-  'MAINSTREAM LOVER': { color: '#FFD93D', emoji: '📢' },
-  'LEANS MAINSTREAM': { color: '#FFD93D', emoji: '📡' },
-  'BALANCED': { color: '#4D96FF', emoji: '⚖️' },
-  'LEANS NICHE': { color: '#C4B5FD', emoji: '🔍' },
-  'HIDDEN GEM HUNTER': { color: '#6BCB77', emoji: '💎' },
-  'NOT ENOUGH DATA': { color: '#A8E6CF', emoji: '❓' },
+  'MAINSTREAM LOVER': { color: '#FFD93D', icon: Megaphone },
+  'LEANS MAINSTREAM': { color: '#FFD93D', icon: Radio },
+  'BALANCED': { color: '#4D96FF', icon: Scale },
+  'LEANS NICHE': { color: '#C4B5FD', icon: Sparkles },
+  'HIDDEN GEM HUNTER': { color: '#6BCB77', icon: Gem },
+  'NOT ENOUGH DATA': { color: '#A8E6CF', icon: HelpCircle },
 };
 
 export default function TasteProfileTab({ tasteData, advancedStats }) {
   const { contrarian, gradeInflation, popularityBias, dropPoint } = advancedStats || {};
   const popBadge = POPULARITY_BADGE[popularityBias?.label] || POPULARITY_BADGE['NOT ENOUGH DATA'];
+  const PopIcon = popBadge.icon;
 
   return (
     <div className="tab-content">
@@ -22,7 +26,15 @@ export default function TasteProfileTab({ tasteData, advancedStats }) {
         <div className="container relative z-1">
           <div className="grid-2" style={{ gap: '2rem' }}>
             <TasteCorrelation tasteData={tasteData} />
+
+          </div>
+        </div>
+      </section>
+      <section className="section texture-dots">
+        <div className="container relative z-1">
+          <div className="grid-2" style={{ gap: '2rem' }}>
             <GradeInflation data={gradeInflation} />
+
           </div>
         </div>
       </section>
@@ -34,7 +46,9 @@ export default function TasteProfileTab({ tasteData, advancedStats }) {
             {/* Popularity Bias */}
             {popularityBias && (
               <div className="stat-mini stat-mini-muted">
-                <div className="stat-mini-icon">{popBadge.emoji}</div>
+                <div className="stat-mini-icon">
+                  <PopIcon size={28} strokeWidth={2.5} />
+                </div>
                 <div className="stat-mini-value" style={{ color: popBadge.color, fontSize: '1.25rem' }}>
                   {popularityBias.label}
                 </div>
@@ -49,7 +63,9 @@ export default function TasteProfileTab({ tasteData, advancedStats }) {
             {/* Drop Point Analysis */}
             {dropPoint && dropPoint.avgDropPercent !== null && (
               <div className="stat-mini stat-mini-accent">
-                <div className="stat-mini-icon">✂️</div>
+                <div className="stat-mini-icon">
+                  <Scissors size={28} strokeWidth={2.5} />
+                </div>
                 <div className="stat-mini-value" style={{ color: 'var(--neo-accent)' }}>
                   {dropPoint.avgDropPercent}%
                 </div>
@@ -93,7 +109,7 @@ export default function TasteProfileTab({ tasteData, advancedStats }) {
                               <img src={c.coverImage} alt="" className="contrarian-cover" loading="lazy" />
                             )}
                             <div className="contrarian-info">
-                              <div className="contrarian-title">{c.title}</div>
+                              <div className="contrarian-title"><AnimeLink id={c.id}>{c.title}</AnimeLink></div>
                               <div className="contrarian-scores">
                                 <span>You: <strong>{c.yourScore}/10</strong></span>
                                 <span>Global: <strong>{c.globalScore}%</strong></span>
@@ -122,7 +138,7 @@ export default function TasteProfileTab({ tasteData, advancedStats }) {
                               <img src={c.coverImage} alt="" className="contrarian-cover" loading="lazy" />
                             )}
                             <div className="contrarian-info">
-                              <div className="contrarian-title">{c.title}</div>
+                              <div className="contrarian-title"><AnimeLink id={c.id}>{c.title}</AnimeLink></div>
                               <div className="contrarian-scores">
                                 <span>You: <strong>{c.yourScore}/10</strong></span>
                                 <span>Global: <strong>{c.globalScore}%</strong></span>

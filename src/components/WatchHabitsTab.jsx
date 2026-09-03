@@ -1,4 +1,4 @@
-import { Flame, Clock, Zap, RefreshCw, BookOpen, Film, CalendarDays } from 'lucide-react';
+import { CalendarDays, Clock, RotateCcw, ClipboardList, Film, Sparkles, Radio, Archive } from 'lucide-react';
 import BingeStats from './BingeStats';
 import SeasonalChart from './SeasonalChart';
 
@@ -28,24 +28,39 @@ export default function WatchHabitsTab({ bingeData, overviewStats, advancedStats
             {/* Hype Lag */}
             {hypeLag && hypeLag.avgLag !== null && (
               <div className="stat-mini stat-mini-blue">
-                <div className="stat-mini-icon">⏰</div>
+                <div className="stat-mini-icon">
+                  <Clock size={28} strokeWidth={2.5} />
+                </div>
                 <div className="stat-mini-value" style={{ color: '#4D96FF' }}>
                   {hypeLag.avgLag > 0 ? '+' : ''}{hypeLag.avgLag}
                 </div>
                 <div className="stat-mini-label">AVG HYPE LAG (YEARS)</div>
-                <div className="stat-mini-sub">
-                  {hypeLag.avgLag <= 0
-                    ? '🔥 Seasonal watcher — on the pulse!'
-                    : hypeLag.avgLag <= 2
-                    ? '📡 Mostly current — slight delay'
-                    : '🏛️ Backlog archaeologist'}
+                <div className="stat-mini-sub" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+                  {hypeLag.avgLag <= 0 ? (
+                    <>
+                      <Sparkles size={14} strokeWidth={2.5} />
+                      <span>Seasonal watcher — on the pulse!</span>
+                    </>
+                  ) : hypeLag.avgLag <= 2 ? (
+                    <>
+                      <Radio size={14} strokeWidth={2.5} />
+                      <span>Mostly current — slight delay</span>
+                    </>
+                  ) : (
+                    <>
+                      <Archive size={14} strokeWidth={2.5} />
+                      <span>Backlog archaeologist</span>
+                    </>
+                  )}
                 </div>
               </div>
             )}
 
             {/* Comfort Rewatch */}
             <div className="stat-mini stat-mini-accent">
-              <div className="stat-mini-icon">🔄</div>
+              <div className="stat-mini-icon">
+                <RotateCcw size={28} strokeWidth={2.5} />
+              </div>
               <div className="stat-mini-value" style={{ color: 'var(--neo-accent)' }}>
                 {comfortRewatchPercent || 0}%
               </div>
@@ -57,7 +72,9 @@ export default function WatchHabitsTab({ bingeData, overviewStats, advancedStats
 
             {/* Unfinished Business */}
             <div className="stat-mini stat-mini-secondary">
-              <div className="stat-mini-icon">📋</div>
+              <div className="stat-mini-icon">
+                <ClipboardList size={28} strokeWidth={2.5} />
+              </div>
               <div className="stat-mini-value" style={{ color: '#FF922B' }}>
                 {planningCount || 0}
               </div>
@@ -69,7 +86,9 @@ export default function WatchHabitsTab({ bingeData, overviewStats, advancedStats
 
             {/* One Piece Effect */}
             <div className="stat-mini stat-mini-green">
-              <div className="stat-mini-icon">🎬</div>
+              <div className="stat-mini-icon">
+                <Film size={28} strokeWidth={2.5} />
+              </div>
               <div className="stat-mini-value" style={{ color: '#6BCB77' }}>
                 {movieEquivalents || 0}
               </div>

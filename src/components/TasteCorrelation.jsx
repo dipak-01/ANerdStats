@@ -2,7 +2,10 @@ import {
   ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   ReferenceLine,
 } from 'recharts';
-import { Eye, Gem, ThumbsDown } from 'lucide-react';
+import {
+  Eye, Gem, ThumbsDown, HeartHandshake, Smile, Scale, Flame, HelpCircle,
+} from 'lucide-react';
+import AnimeLink from './AnimeLink';
 
 function CustomTooltip({ active, payload }) {
   if (!active || !payload?.length) return null;
@@ -17,18 +20,19 @@ function CustomTooltip({ active, payload }) {
 }
 
 const RATING_STYLE_BADGE = {
-  'generous': { color: '#6BCB77', label: '💚 GENEROUS RATER' },
-  'slightly generous': { color: '#FFD93D', label: '😊 SLIGHTLY GENEROUS' },
-  'balanced': { color: '#4D96FF', label: '⚖️ BALANCED' },
-  'slightly harsh': { color: '#FF922B', label: '😤 SLIGHTLY HARSH' },
-  'harsh critic': { color: '#FF6B6B', label: '🔥 HARSH CRITIC' },
-  'unknown': { color: '#C4B5FD', label: '❓ UNKNOWN' },
+  'generous': { color: '#6BCB77', label: 'GENEROUS RATER', icon: HeartHandshake },
+  'slightly generous': { color: '#FFD93D', label: 'SLIGHTLY GENEROUS', icon: Smile },
+  'balanced': { color: '#4D96FF', label: 'BALANCED', icon: Scale },
+  'slightly harsh': { color: '#FF922B', label: 'SLIGHTLY HARSH', icon: ThumbsDown },
+  'harsh critic': { color: '#FF6B6B', label: 'HARSH CRITIC', icon: Flame },
+  'unknown': { color: '#C4B5FD', label: 'UNKNOWN', icon: HelpCircle },
 };
 
 export default function TasteCorrelation({ tasteData }) {
   if (!tasteData || tasteData.totalScored === 0) return null;
 
   const style = RATING_STYLE_BADGE[tasteData.ratingStyle] || RATING_STYLE_BADGE.unknown;
+  const StyleIcon = style.icon;
 
   return (
     <div className="neo-card">
@@ -57,9 +61,12 @@ export default function TasteCorrelation({ tasteData }) {
               padding: '0.5rem 1.25rem',
               boxShadow: 'var(--shadow-sm)',
               transform: 'rotate(-1deg)',
-              display: 'inline-block',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
             }}
           >
+            <StyleIcon size={18} strokeWidth={3} />
             {style.label}
           </span>
           <div style={{ fontSize: '0.8rem', fontWeight: 700, marginTop: '0.75rem' }}>
@@ -129,7 +136,7 @@ export default function TasteCorrelation({ tasteData }) {
                       <img src={g.coverImage} alt="" className="taste-card-cover" loading="lazy" />
                     )}
                     <div className="taste-card-info">
-                      <div className="taste-card-title">{g.title}</div>
+                      <div className="taste-card-title"><AnimeLink id={g.id}>{g.title}</AnimeLink></div>
                       <div className="taste-card-scores">
                         <span>You: <strong>{g.yourScore}/10</strong></span>
                         <span>Global: <strong>{g.globalScore}%</strong></span>
@@ -156,7 +163,7 @@ export default function TasteCorrelation({ tasteData }) {
                       <img src={g.coverImage} alt="" className="taste-card-cover" loading="lazy" />
                     )}
                     <div className="taste-card-info">
-                      <div className="taste-card-title">{g.title}</div>
+                      <div className="taste-card-title"><AnimeLink id={g.id}>{g.title}</AnimeLink></div>
                       <div className="taste-card-scores">
                         <span>You: <strong>{g.yourScore}/10</strong></span>
                         <span>Global: <strong>{g.globalScore}%</strong></span>

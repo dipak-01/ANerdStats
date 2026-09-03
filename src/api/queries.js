@@ -126,3 +126,57 @@ query ($userName: String) {
   }
 }
 `;
+
+// Query 3: Single anime info page (for /anime/:id route)
+export const ANIME_INFO_QUERY = `
+query ($id: Int) {
+  Media(id: $id) {
+    id
+    title {
+      romaji
+      english
+    }
+    description(asHtml: false)
+    coverImage {
+      large
+      medium
+    }
+    bannerImage
+    format
+    episodes
+    duration
+    genres
+    tags {
+      name
+      rank
+    }
+    studios {
+      nodes {
+        name
+      }
+    }
+    seasonYear
+    season
+    averageScore
+    popularity
+    status
+    source
+    relations {
+      edges {
+        relationType
+        node {
+          id
+          title {
+            romaji
+          }
+          type
+          format
+          coverImage {
+            medium
+          }
+        }
+      }
+    }
+  }
+}
+`;

@@ -51,12 +51,15 @@ export default function Dashboard({ userStats, overviewStats, onBack }) {
       </header>
 
       {/* Marquee Divider */}
-      <div className="marquee-divider">
+      {/* <div className="marquee-divider">
         <div className="marquee-inner">
           {'★ ANIME STATS ★ GENRE BREAKDOWN ★ STUDIO RANKINGS ★ BINGE ANALYSIS ★ TASTE CORRELATION ★ SCORE DISTRIBUTION ★ TAG CLOUD ★ RELEASE TIMELINE ★ '
             .repeat(3)}
         </div>
-      </div>
+      </div> */}
+       {/* Tab Navigation with Route Links */}
+      <TabNav />
+
 
       {/* Overview Cards — Always pinned above tabs */}
       <section className="section texture-halftone">
@@ -65,9 +68,7 @@ export default function Dashboard({ userStats, overviewStats, onBack }) {
         </div>
       </section>
 
-      {/* Tab Navigation with Route Links */}
-      <TabNav />
-
+     
       {/* Sub-route / Tab Page Content rendered here */}
       <Outlet />
 

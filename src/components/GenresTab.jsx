@@ -1,12 +1,37 @@
 import { Sparkles } from 'lucide-react';
 import GenreChart from './GenreChart';
 import TagCloud from './TagCloud';
+import StatGuide from './StatGuide';
+
+const GENRES_GUIDE = [
+  {
+    name: 'Genre Frequency & Mean Score',
+    tag: 'MACRO TASTE',
+    what: 'A breakdown of every major genre in your library with title counts and your personal mean rating.',
+    how: 'Compare the bar heights with the mean rating to see if you consume a lot of one genre even if you score another much higher.',
+  },
+  {
+    name: 'Tag Treemap & Tropes',
+    tag: 'MICRO TROPES',
+    what: 'Granular subgenres, narrative devices, and demographic tags (e.g. Isekai, Time Loop, Iyashikei, Psychological) sized by title volume.',
+    how: 'Larger tiles represent the specific storytelling themes and aesthetic devices that you repeatedly seek out.',
+  },
+  {
+    name: 'Genre Evolution Timeline',
+    tag: 'TASTE JOURNEY',
+    what: 'Reveals which anime genre was your #1 most-started category for every year of your anime-watching journey.',
+    how: 'Illustrates how your thematic identity has matured over time — from early mainstream action to nuanced drama or niche subgenres.',
+  },
+];
 
 export default function GenresTab({ anime, advancedStats }) {
   if (!anime) return null;
 
   return (
     <div className="tab-content">
+      {/* Stat Explainer Guide */}
+      <StatGuide title="GENRES & TAGS GUIDE: WHAT THESE METRICS REVEAL" items={GENRES_GUIDE} />
+
       {/* Genre Chart */}
       <section className="section texture-halftone">
         <div className="container relative z-1">

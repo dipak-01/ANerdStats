@@ -1,6 +1,46 @@
 import { CalendarDays, Clock, RotateCcw, ClipboardList, Film, Sparkles, Radio, Archive } from 'lucide-react';
 import BingeStats from './BingeStats';
 import SeasonalChart from './SeasonalChart';
+import StatGuide from './StatGuide';
+
+const HABITS_GUIDE = [
+  {
+    name: 'Binge Velocity & Fastest Binges',
+    tag: 'PACING',
+    what: 'Calendar days elapsed between your recorded start date and completion date on finished anime.',
+    how: 'Distinguishes between shows that captivated you into nonstop single-day marathons versus slow burns stretched across months.',
+  },
+  {
+    name: 'Seasonal Watch Patterns',
+    tag: 'CALENDAR',
+    what: 'Visualizes which calendar months you initiate the highest volume of new anime series.',
+    how: 'Reveals your real-life anime seasons — such as winter holiday marathons, summer breaks, or new season premiere spikes.',
+  },
+  {
+    name: 'Average Hype Lag',
+    tag: 'TIMING',
+    what: 'The average difference in years between an anime\'s original Japanese release and when you actually started watching it.',
+    how: '≤ 0 = Seasonal Pulse (you watch shows while airing); ≥ 3 = Archive Archaeologist (you prefer mature, complete classics).',
+  },
+  {
+    name: 'Comfort Rewatch Index',
+    tag: 'REWATCH',
+    what: 'Estimated percentage of your lifetime watch time spent rewatching shows you have previously finished.',
+    how: 'A higher index indicates you prioritize revisiting comfort favorites over taking chances on untested new releases.',
+  },
+  {
+    name: 'Planning Backlog (Unfinished Business)',
+    tag: 'BACKLOG',
+    what: 'Sum of all episodes currently on your PLANNING list converted into required viewing hours.',
+    how: 'Gives an honest assessment of your watchlist debt and reveals how many sleepless days you need to catch up.',
+  },
+  {
+    name: 'Movie Equivalents (The One Piece Effect)',
+    tag: 'CINEMA',
+    what: 'Total episodes watched converted into 2-hour feature film equivalents (6 episodes ≈ 1 cinema movie).',
+    how: 'Puts your total logged episode count into cinematic perspective by comparing it to Hollywood movie marathons.',
+  },
+];
 
 const HYPE_COLORS = ['#6BCB77', '#4D96FF', '#FFD93D', '#FF922B', '#FF6B6B'];
 
@@ -11,6 +51,9 @@ export default function WatchHabitsTab({ bingeData, overviewStats, advancedStats
 
   return (
     <div className="tab-content">
+      {/* Stat Explainer Guide */}
+      <StatGuide title="WATCH HABITS GUIDE: WHAT THESE METRICS REVEAL" items={HABITS_GUIDE} />
+
       {/* Row 1: Binge Stats + Seasonal Chart */}
       <section className="section texture-halftone">
         <div className="container relative z-1">

@@ -4,6 +4,46 @@ import {
 import AnimeLink from './AnimeLink';
 import TasteCorrelation from './TasteCorrelation';
 import GradeInflation from './GradeInflation';
+import StatGuide from './StatGuide';
+
+const TASTE_GUIDE = [
+  {
+    name: 'Taste vs. The Crowd (Correlation)',
+    tag: 'CORRELATION',
+    what: 'Scatter plot comparing your score directly against the global AniList community average for every scored show.',
+    how: 'Dots plotted above the diagonal line are shows you appreciated more than the crowd; dots below are shows you judged harsher.',
+  },
+  {
+    name: 'Rating Style Disposition',
+    tag: 'DISPOSITION',
+    what: 'Categorizes your grading behavior (Generous, Balanced, or Harsh Critic) based on your net score delta from global consensus.',
+    how: 'Average difference > +5 points identifies a lenient, enthusiastic rater; < -5 points indicates a strict, analytical critic.',
+  },
+  {
+    name: 'Grade Inflation Over Time',
+    tag: 'SCORING TREND',
+    what: 'Plots your annual mean score according to the calendar year you started each series.',
+    how: 'An ascending slope reveals you are growing more generous over time; a descending slope means your standards are becoming more rigorous.',
+  },
+  {
+    name: 'Popularity Bias (Hipster Index)',
+    tag: 'MAINSTREAM BIAS',
+    what: 'Pearson correlation coefficient measuring whether popular titles systematically receive higher or lower scores from you.',
+    how: 'Positive correlation = Mainstream Fan (you enjoy widely hyped hits); Negative correlation = Hidden Gem Hunter (you favor niche, under-the-radar titles).',
+  },
+  {
+    name: 'Drop Point Analysis',
+    tag: 'PATIENCE',
+    what: 'Calculates the average percentage of total episodes you completed before deciding to mark a series as DROPPED.',
+    how: 'Drop point ≤ 25% represents a strict 3-episode rule; drop point ≥ 50% shows deep patience and generous second chances.',
+  },
+  {
+    name: 'Contrarian Outliers (Loved vs Underwhelmed)',
+    tag: 'DIVERGENCE',
+    what: 'Your most extreme positive divergences (shows you loved that the world slept on) and negative divergences (popular darlings you disliked).',
+    how: 'Defines your unique, idiosyncratic taste identity where you disagree most passionately with the general anime community.',
+  },
+];
 
 const POPULARITY_BADGE = {
   'MAINSTREAM LOVER': { color: '#FFD93D', icon: Megaphone },
@@ -21,25 +61,24 @@ export default function TasteProfileTab({ tasteData, advancedStats }) {
 
   return (
     <div className="tab-content">
-      {/* Row 1: Taste Correlation + Grade Inflation */}
+      {/* Stat Explainer Guide */}
+      <StatGuide title="TASTE PROFILE GUIDE: WHAT THESE METRICS REVEAL" items={TASTE_GUIDE} />
+
+      {/* Row 1: Taste Correlation */}
       <section className="section texture-halftone">
         <div className="container relative z-1">
-          <div className="grid-2" style={{ gap: '2rem' }}>
-            <TasteCorrelation tasteData={tasteData} />
-
-          </div>
+          <TasteCorrelation tasteData={tasteData} />
         </div>
       </section>
+
+      {/* Row 2: Grade Inflation */}
       <section className="section texture-dots">
         <div className="container relative z-1">
-          <div className="grid-2" style={{ gap: '2rem' }}>
-            <GradeInflation data={gradeInflation} />
-
-          </div>
+          <GradeInflation data={gradeInflation} />
         </div>
       </section>
 
-      {/* Row 2: Popularity Bias + Drop Point */}
+      {/* Row 3: Popularity Bias + Drop Point */}
       <section className="section section-violet texture-dots">
         <div className="container relative z-1">
           <div className="stat-mini-grid">
@@ -79,134 +118,133 @@ export default function TasteProfileTab({ tasteData, advancedStats }) {
         </div>
       </section>
 
-      {/* Row 3: Contrarian Score */}
+      {/* Row 4: Contrarian Score */}
       {contrarian && (contrarian.mostOverscored?.length > 0 || contrarian.mostUnderscored?.length > 0) && (
         <section className="section texture-grid">
           <div className="container relative z-1">
+            <div className="grid-2" style={{ gap: '2rem' }}>
+              {/* Most Overscored */}
+              {contrarian.mostOverscored?.length > 0 && (
+                <div className="neo-card">
+                  <div className="neo-card-header neo-card-header-secondary">
+                    <div
+                      className="flex-center"
+                      style={{ width: 36, height: 36, border: '3px solid #000', background: 'var(--neo-white)' }}
+                    >
+                      <ThumbsUp size={20} strokeWidth={3} />
+                    </div>
+                    <div>
+                      <h3>LOVED MORE THAN THE CROWD</h3>
+                      <p style={{ fontSize: '0.7rem', fontWeight: 700, opacity: 0.7 }}>YOUR BIGGEST GUILTY PLEASURES</p>
+                    </div>
+                  </div>
+                  <div className="neo-card-body">
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                      {contrarian.mostOverscored.map((c) => (
+                        <div key={c.id || c.title} className="contrarian-card">
+                          {c.coverImage && (
+                            <img src={c.coverImage} alt="" className="contrarian-cover" loading="lazy" />
+                          )}
+                          <div className="contrarian-info">
+                            <div className="contrarian-title"><AnimeLink id={c.id}>{c.title}</AnimeLink></div>
+                            <div className="contrarian-scores">
+                              <span>You: <strong>{c.yourScore}/10</strong></span>
+                              <span>Global: <strong>{c.globalScore}%</strong></span>
+                            </div>
+                          </div>
+                          <div className="contrarian-diff contrarian-diff-pos">
+                            +{c.diff}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Most Underscored */}
+              {contrarian.mostUnderscored?.length > 0 && (
+                <div className="neo-card">
+                  <div className="neo-card-header neo-card-header-accent">
+                    <div
+                      className="flex-center"
+                      style={{ width: 36, height: 36, border: '3px solid #000', background: 'var(--neo-white)' }}
+                    >
+                      <ThumbsDown size={20} strokeWidth={3} />
+                    </div>
+                    <div>
+                      <h3>UNDERWHELMED YOU</h3>
+                      <p style={{ fontSize: '0.7rem', fontWeight: 700, opacity: 0.7 }}>EVERYONE LOVED IT EXCEPT YOU</p>
+                    </div>
+                  </div>
+                  <div className="neo-card-body">
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                      {contrarian.mostUnderscored.map((c) => (
+                        <div key={c.id || c.title} className="contrarian-card">
+                          {c.coverImage && (
+                            <img src={c.coverImage} alt="" className="contrarian-cover" loading="lazy" />
+                          )}
+                          <div className="contrarian-info">
+                            <div className="contrarian-title"><AnimeLink id={c.id}>{c.title}</AnimeLink></div>
+                            <div className="contrarian-scores">
+                              <span>You: <strong>{c.yourScore}/10</strong></span>
+                              <span>Global: <strong>{c.globalScore}%</strong></span>
+                            </div>
+                          </div>
+                          <div className="contrarian-diff contrarian-diff-neg">
+                            {c.diff}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Row 5: Where do you drop? */}
+      {dropPoint && dropPoint.drops?.length > 0 && (
+        <section className="section texture-dots">
+          <div className="container relative z-1">
             <div className="neo-card">
-              <div className="neo-card-header neo-card-header-secondary">
+              <div className="neo-card-header neo-card-header-muted">
                 <div
                   className="flex-center"
                   style={{ width: 36, height: 36, border: '3px solid #000', background: 'var(--neo-white)' }}
                 >
                   <Target size={20} strokeWidth={3} />
                 </div>
-                <h3>CONTRARIAN SCORE</h3>
-              </div>
-              <div className="neo-card-body">
-                <div className="grid-2" style={{ gap: '2rem' }}>
-                  {/* You loved, others didn't */}
-                  {contrarian.mostOverscored?.length > 0 && (
-                    <div>
-                      <h4 style={{ fontSize: '0.85rem', letterSpacing: '0.15em', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <ThumbsUp size={18} strokeWidth={3} />
-                        YOUR GUILTY PLEASURES
-                      </h4>
-                      <div className="contrarian-list">
-                        {contrarian.mostOverscored.map((c, i) => (
-                          <div key={i} className="contrarian-card">
-                            {c.coverImage && (
-                              <img src={c.coverImage} alt="" className="contrarian-cover" loading="lazy" />
-                            )}
-                            <div className="contrarian-info">
-                              <div className="contrarian-title"><AnimeLink id={c.id}>{c.title}</AnimeLink></div>
-                              <div className="contrarian-scores">
-                                <span>You: <strong>{c.yourScore}/10</strong></span>
-                                <span>Global: <strong>{c.globalScore}%</strong></span>
-                              </div>
-                            </div>
-                            <div className="contrarian-diff" style={{ color: '#6BCB77' }}>
-                              +{c.diff}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Others loved, you didn't */}
-                  {contrarian.mostUnderscored?.length > 0 && (
-                    <div>
-                      <h4 style={{ fontSize: '0.85rem', letterSpacing: '0.15em', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <ThumbsDown size={18} strokeWidth={3} />
-                        YOU WEREN'T IMPRESSED
-                      </h4>
-                      <div className="contrarian-list">
-                        {contrarian.mostUnderscored.map((c, i) => (
-                          <div key={i} className="contrarian-card">
-                            {c.coverImage && (
-                              <img src={c.coverImage} alt="" className="contrarian-cover" loading="lazy" />
-                            )}
-                            <div className="contrarian-info">
-                              <div className="contrarian-title"><AnimeLink id={c.id}>{c.title}</AnimeLink></div>
-                              <div className="contrarian-scores">
-                                <span>You: <strong>{c.yourScore}/10</strong></span>
-                                <span>Global: <strong>{c.globalScore}%</strong></span>
-                              </div>
-                            </div>
-                            <div className="contrarian-diff" style={{ color: '#FF6B6B' }}>
-                              {c.diff}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Drop Point Distribution */}
-      {dropPoint && dropPoint.distribution?.length > 0 && (
-        <section className="section section-yellow texture-halftone">
-          <div className="container relative z-1">
-            <div className="neo-card">
-              <div className="neo-card-header neo-card-header-accent">
-                <div
-                  className="flex-center"
-                  style={{ width: 36, height: 36, border: '3px solid #000', background: 'var(--neo-white)' }}
-                >
-                  <Scissors size={20} strokeWidth={3} />
-                </div>
                 <h3>WHERE DO YOU DROP?</h3>
-                <span className="neo-badge neo-badge-pill" style={{ background: 'var(--neo-white)', marginLeft: 'auto', fontSize: '0.7rem' }}>
-                  {dropPoint.count} DROPPED
+                <span className="neo-badge neo-badge-pill neo-badge-accent" style={{ marginLeft: 'auto', fontSize: '0.7rem' }}>
+                  {dropPoint.count} TITLES
                 </span>
               </div>
               <div className="neo-card-body">
-                <div className="hype-bar-track" style={{ height: '40px' }}>
-                  {dropPoint.distribution.map((d, i) => {
-                    const total = dropPoint.distribution.reduce((s, x) => s + x.count, 0);
-                    const pct = total > 0 ? (d.count / total) * 100 : 0;
-                    const colors = ['#FF6B6B', '#FF922B', '#FFD93D', '#6BCB77'];
-                    return pct > 0 ? (
-                      <div
-                        key={d.label}
-                        className="hype-bar-seg"
-                        style={{ flex: pct, background: colors[i % colors.length] }}
-                        title={`${d.label}: ${d.count}`}
-                      >
-                        {pct > 12 && `${d.label}`}
-                      </div>
-                    ) : null;
-                  })}
+                <div className="hype-lag-bar-container">
+                  {dropPoint.distribution?.map((d) => (
+                    <div
+                      key={d.label}
+                      className="hype-lag-bar-segment"
+                      style={{
+                        flex: Math.max(d.count, 0.5),
+                        backgroundColor: d.color,
+                      }}
+                      title={`${d.label}: ${d.count}`}
+                    >
+                      {d.count > 0 && <span>{d.count}</span>}
+                    </div>
+                  ))}
                 </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.75rem', justifyContent: 'center' }}>
-                  {dropPoint.distribution.map((d, i) => {
-                    const colors = ['#FF6B6B', '#FF922B', '#FFD93D', '#6BCB77'];
-                    return (
-                      <span
-                        key={d.label}
-                        className="neo-badge"
-                        style={{ background: colors[i % colors.length], fontSize: '0.65rem' }}
-                      >
-                        {d.label}: {d.count}
-                      </span>
-                    );
-                  })}
+                <div className="hype-lag-legend">
+                  {dropPoint.distribution?.map((d) => (
+                    <div key={d.label} className="hype-lag-legend-item">
+                      <div className="hype-lag-legend-dot" style={{ backgroundColor: d.color }} />
+                      <span>{d.label} ({d.count})</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

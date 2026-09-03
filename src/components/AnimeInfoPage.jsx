@@ -185,23 +185,27 @@ export default function AnimeInfoPage({ allEntries, userStats }) {
       <header className="dash-header texture-grid">
         <div className="container">
           <div className="dash-header-inner">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div className="dash-user">
               <button
                 className="neo-btn neo-btn-outline"
                 onClick={() => navigate(-1)}
                 aria-label="Go back"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.5rem 0.85rem' }}
+                style={{ padding: '0.5rem' }}
               >
-                <ArrowLeft size={20} strokeWidth={3} />
-                <span style={{ fontWeight: 900, fontSize: '0.85rem' }}>BACK</span>
+                <ArrowLeft size={24} strokeWidth={3} />
               </button>
+              {userStats?.avatar?.large && (
+                <img
+                  src={userStats.avatar.large}
+                  alt={userStats?.name ? `${userStats.name}'s avatar` : 'User avatar'}
+                  className="dash-avatar"
+                />
+              )}
               <div>
-                <h2 className="dash-username" style={{ fontSize: '1.25rem', marginBottom: 0 }}>
-                  ANIME DOSSIER
-                </h2>
+                <h2 className="dash-username">{userStats?.name || 'ANERDSTATS'}</h2>
                 <span
                   className="neo-badge neo-badge-pill neo-badge-accent"
-                  style={{ transform: 'rotate(-1deg)', fontSize: '0.65rem' }}
+                  style={{ transform: 'rotate(-1deg)' }}
                 >
                   STATS FOR NERDS
                 </span>

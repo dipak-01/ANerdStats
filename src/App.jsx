@@ -5,6 +5,15 @@ import { USER_STATS_QUERY, USER_LIST_QUERY } from './api/queries';
 import { calculateBingeStats } from './stats/binge';
 import { calculateTasteCorrelation } from './stats/taste';
 import { calculateOverviewStats } from './stats/overview';
+import {
+  calculateContrarianScore,
+  calculateGradeInflation,
+  calculatePopularityBias,
+  calculateAnimeDecade,
+  calculateGenreEvolution,
+  calculateHypeLag,
+  calculateDropPointAnalysis,
+} from './stats/advanced';
 import SearchHero from './components/SearchHero';
 import Dashboard from './components/Dashboard';
 
@@ -15,6 +24,7 @@ export default function App() {
   const [overviewStats, setOverviewStats] = useState(null);
   const [bingeData, setBingeData] = useState(null);
   const [tasteData, setTasteData] = useState(null);
+  const [advancedStats, setAdvancedStats] = useState(null);
   const [error, setError] = useState('');
 
   const handleSearch = useCallback(async (username) => {
@@ -46,9 +56,27 @@ export default function App() {
       const binge = calculateBingeStats(entries);
       const taste = calculateTasteCorrelation(entries);
 
+      // Compute advanced stats (all from existing data, zero extra API calls)
+      const contrarian = calculateContrarianScore(entries);
+      const gradeInflation = calculateGradeInflation(entries);
+      const popularityBias = calculatePopularityBias(entries);
+      const decade = calculateAnimeDecade(entries);
+      const genreEvolution = calculateGenreEvolution(entries);
+      const hypeLag = calculateHypeLag(entries);
+      const dropPoint = calculateDropPointAnalysis(entries);
+
       setOverviewStats(overview);
       setBingeData(binge);
       setTasteData(taste);
+      setAdvancedStats({
+        contrarian,
+        gradeInflation,
+        popularityBias,
+        decade,
+        genreEvolution,
+        hypeLag,
+        dropPoint,
+      });
       setState('dashboard');
     } catch (err) {
       console.error('Failed to fetch stats:', err);
@@ -64,6 +92,7 @@ export default function App() {
     setOverviewStats(null);
     setBingeData(null);
     setTasteData(null);
+    setAdvancedStats(null);
     setError('');
   }, []);
 
@@ -107,6 +136,7 @@ export default function App() {
         overviewStats={overviewStats}
         bingeData={bingeData}
         tasteData={tasteData}
+        advancedStats={advancedStats}
         onBack={handleBack}
       />
     );
